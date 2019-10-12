@@ -173,8 +173,8 @@ Mooring_Distance(1:lonlen,1:latlen)=0; % the distance of the grid points to a si
 
 
 
-load cmap_pos_neg
-load camp_positive
+%load cmap_pos_neg
+%load camp_positive
 
 % draw different variables in 3 figures with different colormaps  
 hf1=figure('position',[100 50 900 950]);
@@ -284,7 +284,7 @@ subplot(it_num,3,(iter-1)*3+1);
 
 m_proj('stereographic','lat',-90,'long',0,'radius',LatBry+90,'rec','off');hold on;
 [~,h]=m_contourf(XX0,YY0,dplot',cv_sd);set(h,'linestyle','none');colorbar;caxis([cmin_sd cmax_sd]);
-colormap(cmap_positive);
+colormap cool;
 
 m_grid('xtick',12,'XAxisLocation','top','tickdir','out','ytick',-80:20:-20,'yticklabel',[],'linest','-','color','k');
 m_coast('patch',[.7 .7 .7],'edgecolor','none');
@@ -302,7 +302,7 @@ m_grid('xtick',12,'XAxisLocation','top','tickdir','out','ytick',-80:20:-20,'ytic
 m_coast('patch',[.7 .7 .7],'edgecolor','none');
 set(findobj('tag','m_grid_color'),'facecolor','none');
 
-colormap(cmap_positive);
+colormap cool;
 m_plot(dx0,dy0,'k-o','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',5)
 
 %%
@@ -314,7 +314,7 @@ m_proj('stereographic','lat',-90,'long',0,'radius',LatBry+90,'rec','off');hold o
 m_grid('xtick',12,'XAxisLocation','top','tickdir','out','ytick',-80:20:-20,'yticklabel',[],'linest','-','color','k');
 m_coast('patch',[.7 .7 .7],'edgecolor','none');
 set(findobj('tag','m_grid_color'),'facecolor','none');
-colormap(cmap_pos_neg);
+colormap jet;
 m_plot(dx0,dy0,'k-o','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',5)
 %% update the variable for next iteration   
 var=var-var_reg;
