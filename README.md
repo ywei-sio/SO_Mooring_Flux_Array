@@ -8,7 +8,7 @@ The subroutine ‘smooth2D_per.m’ is used to generate spatially filtered data,
 
 (3) Run ‘SO_JRA_Qnet_EOF_Analysis.m’ for EOF analysis. 
 
-(4) Run ‘SO_PlaceMooring.m’ to site moorings based on the largest local standard deviation or largest constration of total variance. 
+(4) Run ‘SO_PlaceMooring.m’ to site moorings based on criteria of constraining the largest local standard deviation or fraction of total variance. 
 
 Matlab toolbox m_map and seawater are required. 
 
