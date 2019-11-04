@@ -10,6 +10,7 @@ De_SOFS=0;% remove OOI and SOFS site correlated component or not
 Freqcomp='Low';% 'High' freq. or 'Low' freq.
 Choicerule='Totvar'; % site mooring to maximize local SD or total variance. Choicerule='SD' or 'TotVar'
 
+Do_Weight=1;
 %------ mooring selection experiment based on JRA reanalysis------
 load JRA_Qnet_197901_201612.mat;
 nt=456;
@@ -148,7 +149,19 @@ for it=1:timelen
 end
 [m,n]=size(P); %m=timelen, n denotes grid number in the ocean
 
+%-----weight the variable ----------
+W(1:lonlen,1:latlen)=1; % weight for global field
+if Do_Weight==1
+    for j=1:latlen
+        W(:,j)=sqrt(cos(lat0(j)/90*pi/2));
+    end
+end
 
+var_weight=var;
+for it=1:timelen
+    var_weight(:,:,it)=squeeze(var(:,:,it)).*W;
+end
+%-----------------------------
 
 
 var_reg(1:lonlen,1:latlen,1:nt)=nan;% mooring site-correlated component that neeeds to be subtracted
@@ -187,14 +200,14 @@ for iter=1:it_num
     %     plot2: domain averaged variance explained by mooring at each grid
     %     plot3: correlation map
     for it=1:timelen
-        aa=reshape(squeeze(var(:,:,it)),1,latlen*lonlen);% aa is a temporal var.
+        aa=reshape(squeeze(var_weight(:,:,it)),1,latlen*lonlen);% aa is a temporal var.
         P(it,1:n)=aa(IX2);
     end
     
     
     for id=1:lonlen
         for jd=1:latlen
-            xtmp=squeeze(var(id,jd,:));
+            xtmp=squeeze(var_weight(id,jd,:));
             if ~isnan(xtmp(1))
 %                 sum=0;
 %                 for k=1:n
@@ -321,6 +334,9 @@ var=var-var_reg;
 var=var+0.0000000001*rand(lonlen,latlen,nt);% added on a small random variable to avoid zero denominator 
 var(IX1)=nan;
 
+for it=1:timelen
+    var_weight(:,:,it)=squeeze(var(:,:,it)).*W;
+end
 %mask the area around the selected moorings
 
 %option 1: keep a 15 longitude degree from mooring  
