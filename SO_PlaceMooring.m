@@ -230,7 +230,7 @@ for iter=1:it_num
 %1. land or sea % isnan(dplot)
 %2. EEZ/shallow water %  EEZ_Topo_Mask
 %3. Domain to deploy mooring % Mooring_band
-%4. Keep a distance from existing mooring sites % Mooring_Select   
+%4. Keep a distance from existing mooring sites % Mooring_Cover   
  
 if Do_EEZ_Mask==1
     IX20=isnan(dplot)|EEZ_Topo_Mask0|Mooring_band|Mooring_Cover;
