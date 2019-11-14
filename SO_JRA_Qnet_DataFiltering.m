@@ -12,7 +12,7 @@ nt=nyear*12;% 456
 missval=-1.e34;
 landmask(landmask==0)=nan;
 
-Qnet(nx,ny,nt)=0;
+% Qnet(nx,ny,nt)=0;
 for it=1:nt
     Qnet(:,:,it)=squeeze(Qnet(:,:,it)).*landmask;
 end
