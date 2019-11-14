@@ -156,11 +156,14 @@ if Do_Weight==1
         W(:,j)=sqrt(cos(lat0(j)/90*pi/2));
     end
 end
+aa=reshape(W,1,latlen*lonlen);
+Wp(1:n)=aa(IX2);
+Wp=Wp/sum(Wp);
 
-var_weight=var;
-for it=1:timelen
-    var_weight(:,:,it)=squeeze(var(:,:,it)).*W;
-end
+%var_weight=var;
+%for it=1:timelen
+%    var_weight(:,:,it)=squeeze(var(:,:,it)).*W;
+%end
 %-----------------------------
 
 
@@ -200,14 +203,14 @@ for iter=1:it_num
     %     plot2: domain averaged variance explained by mooring at each grid
     %     plot3: correlation map
     for it=1:timelen
-        aa=reshape(squeeze(var_weight(:,:,it)),1,latlen*lonlen);% aa is a temporal var.
+        aa=reshape(squeeze(var(:,:,it)),1,latlen*lonlen);% aa is a temporal var.
         P(it,1:n)=aa(IX2);
     end
     
     
     for id=1:lonlen
         for jd=1:latlen
-            xtmp=squeeze(var_weight(id,jd,:));
+            xtmp=squeeze(var(id,jd,:));
             if ~isnan(xtmp(1))
 %                 sum=0;
 %                 for k=1:n
@@ -217,8 +220,12 @@ for iter=1:it_num
                 
                 xtmp=xtmp/norm(xtmp);
                 reg_coef=(P)'*xtmp;  % reg_coef of SO Qnet field to this site
-                Var_total(id,jd)=norm(reg_coef).^2/m; % m is length of time
-                Var_ave(id,jd)=Var_total(id,jd)/n;% n is grid point number; make it stands for grid point-averaged variance.
+                reg_coef=reg_coef.*sqrt(Wp);
+                Var_ave(id,jd)=norm(reg_coef).^2/m; % m is length of time
+                
+                
+%                Var_total(id,jd)=norm(reg_coef).^2/m; % m is length of time
+%                Var_ave(id,jd)=Var_total(id,jd)/n;% n is grid point number; make it stands for grid point-averaged variance.
                 
             end
         end
@@ -334,9 +341,10 @@ var=var-var_reg;
 var=var+0.0000000001*rand(lonlen,latlen,nt);% added on a small random variable to avoid zero denominator 
 var(IX1)=nan;
 
-for it=1:timelen
-    var_weight(:,:,it)=squeeze(var(:,:,it)).*W;
-end
+%for it=1:timelen
+%    var_weight(:,:,it)=squeeze(var(:,:,it)).*W;
+%end
+
 %mask the area around the selected moorings
 
 %option 1: keep a 15 longitude degree from mooring  
