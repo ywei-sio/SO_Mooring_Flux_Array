@@ -220,7 +220,7 @@ for iter=1:it_num
                 
                 xtmp=xtmp/norm(xtmp);
                 reg_coef=(P)'*xtmp;  % reg_coef of SO Qnet field to this site
-                reg_coef=reg_coef.*sqrt(Wp);
+                reg_coef=reg_coef.*sqrt(Wp');
                 Var_ave(id,jd)=norm(reg_coef).^2/m; % m is length of time
                 
                 
