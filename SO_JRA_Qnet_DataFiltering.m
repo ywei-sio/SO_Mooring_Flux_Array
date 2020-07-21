@@ -169,7 +169,7 @@ save Qnet_LowFreq_Hanning  Qnet_LowFreq
 save Qnet_HighFreq_Hanning  Qnet_HighFreq 
 
 %-----------Spatially smooth the data using box average--------------------
-Lx=5;Ly=5;
+Lx=5;Ly=5; % need to adjust these scales for data have different spatial resolutions.  
 for it=1:nt
    Qnet_LowFreq(:,:,it)=smooth2D_per(squeeze(Qnet_LowFreq(:,:,it)),Lx,Ly,lat);
 end
